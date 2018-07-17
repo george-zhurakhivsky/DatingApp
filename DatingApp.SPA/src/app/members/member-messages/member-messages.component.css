@@ -1,0 +1,24 @@
+.panel-primary {
+    border:none;
+}
+.chat {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.chat li {
+    margin-bottom: 10;
+    padding-bottom: 10px;
+    border-bottom: 1px dotted #b3b3b3;
+}
+
+.img-circle {
+    height: 50px;
+    width: 50px;
+}
+
+.panel-body {
+    overflow-y: scroll;
+    height: 400px;
+}

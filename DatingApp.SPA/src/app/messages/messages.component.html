@@ -1,0 +1,58 @@
+<div class="container">
+
+  <div>
+    <div class="btn-group">
+      <button class="btn btn-primary" [(ngModel)]="messageContainer" btnRadio="Unread" (click)="changeContainer()">
+        <i class="fa fa-envelope"></i> Unread
+      </button>
+      <button class="btn btn-primary" [(ngModel)]="messageContainer" btnRadio="Inbox" (click)="loadMessages()">
+        <i class="fa fa-envelope-open"></i> Inbox
+      </button>
+      <button class="btn btn-primary" [(ngModel)]="messageContainer" btnRadio="Outbox" (click)="loadMessages()">
+        <i class="fa fa-paper-plane"></i> Outbox
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="messages.length == 0">
+    <h1>No messages</h1>
+  </div>
+
+  <div *ngIf="messages.length > 0">
+    <table class="table table-hover" style="cursor: pointer">
+      <tr>
+        <th style="width: 40%">Message</th>
+        <th style="width: 20%">From / To</th>
+        <th style="width: 20%">Sent / Received</th>
+        <th style="width: 20%"></th>
+      </tr>
+      <tr *ngFor="let message of messages" [routerLink]="['/members', 
+      messageContainer == 'Outbox' ? message.recipientId : message.senderId]" [queryParams]="{tab: 3}">
+        <td>{{message.content}}</td>
+        <td>
+          <div *ngIf="messageContainer != 'Outbox'">
+            <img [src]="message.senderPhotoUrl" class="img-circle">
+            <strong>{{message.senderKnownAs}}</strong>
+          </div>
+          <div *ngIf="messageContainer == 'Outbox'">
+            <img [src]="message.recipientPhotoUrl" class="img-circle">
+            <strong>{{message.recipientKnownAs}}</strong>
+          </div>
+        </td>
+        <td>{{message.sentTime | timeAgo}}</td>
+        <td>
+          <button class="btn btn-danger" 
+          (click)="$event.stopPropagation();deleteMessage(message.id)">Delete</button>
+        </td>
+      </tr>
+    </table>
+
+    <div class="text-center">
+      <pagination [boundaryLinks]="true" [totalItems]="pagination.totalItems" [itemsPerPage]="pagination.itemsPerPage" (pageChanged)="pageChanged($event)"
+        [(ngModel)]="pagination.currentPage" class="pagination-sm" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;"
+        lastText="&raquo;"></pagination>
+    </div>
+
+  </div>
+
+</div>

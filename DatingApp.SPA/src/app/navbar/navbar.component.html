@@ -1,0 +1,53 @@
+<nav class="navbar navbar-inverse">
+    <div class="container">
+        <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" [routerLink]="['/home']">Dating App</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul *ngIf="loggedIn()" class="nav navbar-nav">
+            <li routerLinkActive="active"><a [routerLink]="['/members']">Matches</a></li>
+            <li routerLinkActive="active"><a [routerLink]="['/lists']">Lists</a></li>
+            <li routerLinkActive="active"><a [routerLink]="['/messages']">Messages</a></li>
+          </ul>
+        <form *ngIf="!loggedIn()" #loginForm="ngForm" class="navbar-form navbar-right" (ngSubmit)="login()">
+            <div class="form-group">
+            <input 
+            required
+            [(ngModel)]="model.username" name="username"
+            placeholder="Username"
+            class="form-control" type="text">
+            </div>
+            <div class="form-group">
+            <input 
+            required 
+            [(ngModel)]="model.password" name="password"
+            placeholder="Password" 
+            class="form-control" type="password">
+            </div>
+            <button [disabled]="!loginForm.valid" type="submit" class="btn btn-secondary">Sign in</button>
+        </form>
+        <ul *ngIf="loggedIn()" class="nav navbar-nav navbar-right">
+            <li>
+              <img src="{{photoUrl}}" [routerLink]="['/member/edit']">
+            </li>
+            <li class="dropdown" dropdown>
+              <a class="dropdown-toggle" dropdownToggle>
+                Welcome {{authService.decodedToken.unique_name | titlecase}}
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" *dropdownMenu>
+                <li><a [routerLink]="['/member/edit']"><i class="fa fa-user"></i> Edit profile</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a (click)="logout()"><i class="fa fa-sign-out"></i> Log out</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+    </div>
+</nav>
